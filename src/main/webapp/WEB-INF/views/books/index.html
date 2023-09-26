@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список книг</title>
+</head>
+<body>
+<h3>Список книг</h3>
+<div th:each="book: ${booksUtil.getBookList()}">
+    <a th:text="${book.getName() +', '+ book.getAuthor()+', '+book.getYear()}" th:href="@{/books/{id}(id=${book.getBookId()})}"></a>
+    <span th:if="${book.isLate()}" style="color:red;"> Книга просрочена</span>
+</div>
+<br/>
+<div th:if="${booksUtil.isPaginated()}">
+    <a th:if="${booksUtil.getPageNum()>0}"
+       th:href="@{/books(page=${booksUtil.getPageNum()-1},books_per_page=${booksUtil.getBooksPerPage()})}">Предыдущая страница</a>
+    <a th:if="${booksUtil.getBookList().size() == booksUtil.getBooksPerPage()}"
+       th:href="@{/books(page=${booksUtil.getPageNum()+1},books_per_page=${booksUtil.getBooksPerPage()})}">Следующая страница</a>
+</div>
+<br/>
+<a href="/books/search">Найти книгу</a>
+<br/>
+<a href="/books/new">Добавить книгу</a>
+<br/>
+<a href="/">Назад</a>
+</body>
+</html>

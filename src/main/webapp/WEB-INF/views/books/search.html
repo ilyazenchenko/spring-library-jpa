@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Найти книгу</title>
+</head>
+<body>
+<h3>Найти книги</h3>
+<form th:method="get" th:action="@{search?pattern=${param.pattern}}">
+    <label for="name">Введите название книги: </label>
+    <input type="text" id="name" name="pattern">
+    <br/>
+    <input type="submit" value="Найти">
+</form>
+<div th:if="${books != null}">
+    <div th:if="${books.size() > 0}">
+        <div th:each="book: ${books}">
+            <a th:text="${book.getName()}"
+               th:href="@{/books/{id}(id=${book.getBookId()})}"></a>
+            <span>: </span>
+            <a th:if="${book.getOwner() != null}" th:text="${'Владелец: '+book.getOwner().getName()}"
+               th:href="@{/people/{id}(id=${book.getOwner().getId()})}"></a>
+            <span th:if="${book.isLate()}" style="color:red;"> Книга просрочена</span>
+            <a th:if="${book.getOwner() == null}">Книга свободна</a>
+        </div>
+    </div>
+    <div th:unless="${books.size() > 0}">Книги не найдены</div>
+</div>
+<br/>
+<a href="/books">Назад</a>
+</body>
+</html>
